@@ -119,7 +119,16 @@ class SuperStorageModel: ObservableObject {
     let total = 4
     let parts = (0..<total).map { partInfo(index: $0, of: total) }
     // Add challenge code here.
-    return Data()
+    async let download1 = downloadWithProgress(fileName: file.name, name: parts[0].name, size: parts[0].size, offset: parts[0].offset)
+    async let download2 = downloadWithProgress(fileName: file.name, name: parts[1].name, size: parts[1].size, offset: parts[1].offset)
+    async let download3 = downloadWithProgress(fileName: file.name, name: parts[2].name, size: parts[2].size, offset: parts[2].offset)
+    async let download4 = downloadWithProgress(fileName: file.name, name: parts[3].name, size: parts[3].size, offset: parts[3].offset)
+
+    let downloadDatas = try await [download1, download2, download3, download4]
+
+    return downloadDatas.reduce(into: Data()) { result, data in
+      result.append(data)
+    }
   }
 
   /// Flag that stops ongoing downloads.

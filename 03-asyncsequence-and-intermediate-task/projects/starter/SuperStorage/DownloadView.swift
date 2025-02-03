@@ -100,6 +100,7 @@ struct DownloadView: View {
         },
         downloadMultipleAction: {
           // Download a file in multiple concurrent parts.
+          
         }
       )
       if !model.downloads.isEmpty {
