@@ -287,3 +287,4 @@ DerivedData/
 
 ## Gcc Patch
 /*.gcno
+00-book-server/.build
