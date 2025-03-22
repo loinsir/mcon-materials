@@ -47,7 +47,10 @@ struct BottomToolbar: View {
       })
 
       Button(action: {
-        // Clear in-memory cache
+        Task {
+          await ImageDatabase.shared.clearInMemoryAssets()
+          try await model.loadImages()
+        }
       }, label: {
         Image(systemName: "square.stack.3d.up.slash")
       })
@@ -58,5 +61,13 @@ struct BottomToolbar: View {
     }
     .padding(.vertical, 2)
     .padding(.horizontal, 5)
+    .task {
+      guard let memoryAccessSequence = ImageDatabase.shared.imageLoader.inMemoryAccess else {
+        return
+      }
+      for await count in memoryAccessSequence {
+        inMemoryAccessCount = count
+      }
+    }
   }
 }
